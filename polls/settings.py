@@ -43,6 +43,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     #A framework for managing static files
     'django.contrib.staticfiles',
+    #Our polls app
+    'polls_app',
 )
 
 MIDDLEWARE_CLASSES = (
