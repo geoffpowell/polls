@@ -1,12 +1,17 @@
+import datetime
+
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
-    def __unicode__(self): #using unicode because python 2. Python 3 should use __str__
+    def __unicode__(self): #using __unicode__ method because python 2. Python 3 should use __str__.
     		return self.question_text
+    def was_published_recently(self):
+    		return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
 
 class Choice(models.Model):
