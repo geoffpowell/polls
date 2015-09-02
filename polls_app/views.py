@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 # Create your views here.
 def index(request):
-		return HttpResponse("This view works. Why don't the others work?")
+		return HttpResponse("Hello! I'm your homepage!")
 
 def detail(request, question_id):
     return HttpResponse("You're looking at question %s." % question_id)
@@ -13,6 +13,3 @@ def results(request, question_id):
 
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
-
-def wtf(request):
-		return HttpResponse("Ok, we got this page.")
