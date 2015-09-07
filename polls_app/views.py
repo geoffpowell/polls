@@ -2,29 +2,27 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.views import generic
 # from django.template import RequestContext, loader
 
 from .models import Choice, Question
 # Create your views here.
-# def index(request):
-# 		return HttpResponse("Hello! I'm your homepage!")
-def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    context = {'latest_question_list': latest_question_list}
-    return render(request, 'polls_app/index.html', context)
-		# output = ', '.join([p.question_text for p in latest_question_list])
-		# return HttpResponse(output)
 
-def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+class IndexView(generic.ListView):
+		template_name = 'polls_app/index.html'
+		context_object_name = 'latest_question_list'
 
-# def results(request, question_id):
-#     response = "You're looking at the results of question %s."
-#     return HttpResponse(response % question_id)
+		def get_queryset(self):
+				"""Return the last five published questions."""
+				return Question.objects.order_by('-pub_date')[:5]
 
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls_app/results.html', {'question': question})
+class DetailView(generic.DetailView):
+		model = Question
+		template_name = 'polls_app/detail.html'
+
+class ResultsView(generic.DetailView):
+		model = Question
+		template_name = 'polls_app/results.html'
 
 def vote(request, question_id):
     p = get_object_or_404(Question, pk=question_id)
@@ -43,7 +41,3 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls_app:results', args=(p.id,)))
-
-def detail(request, question_id):
-		question = get_object_or_404(Question, pk=question_id)
-		return render(request, 'polls_app/detail.html', {'question': question})
